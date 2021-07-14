@@ -5,7 +5,7 @@
 typedef struct person {
     int age;
     char *phone; // 11位手机号 + 1结束符
-    char *name; // 50位 + 1结束符
+    char *name; // 10位 + 1结束符
 }personType;
 
 int main() {
@@ -30,7 +30,7 @@ int main() {
     p->age = 20;
     p->phone = (char*)malloc(12);
     strcpy(p->phone, "18259179840\0");
-    p->name = (char*)malloc(51);
+    p->name = (char*)malloc(11);
     strcpy(p->name, "shishao\0");
 
     printf("p person info: \n");
@@ -38,25 +38,27 @@ int main() {
     printf("p.phone: %s\n", p->phone);
     printf("p.name: %s\n", p->name);
 
-
     //一次分配所需内存
     void *pt;
-    personType *p2;
-    pt = (void*)malloc(sizeof(personType) + 12 + 51);
+    pt = (void*)malloc(sizeof(personType) + 8 + 12 + 11);
 
+    personType *p2;
     char *phone;
     char *name;
-    int *age;
-    personType *temp;
-    temp = (personType*)(pt+sizeof(personType));
-    age = ((int*)temp)-16;
-    *age = 100;
-    printf("p2 age info: %d\n", (*temp).age);
+    int age;
 
-    // strcpy(p2->phone, "18259179840\0");
-    // strcpy(p2->name, "shishao\0");
-    // printf("p2 person info: ");
-    // printf("p2.age: %d\n", p2->age);
-    // printf("p2.phone: %s\n", p2->phone);
-    // printf("p2.name: %s\n", p2->name);
+    *((int *)pt) = 99;
+    age = *((int *)pt);
+    printf("age = %d \n", age);
+
+    *((char**)pt + 8) = "18259179840\0";
+    // phone = (char*)((char*)pt + 8);
+    // phone = "18259179840";
+    // printf("phone = %s \n", phone);
+    printf("(char*)((char*)pt + 8) = %s \n", (char*)((char*)pt + 8));
+
+    name = (char*)((char*)pt + 8 + 12);
+    name = "shishao-12\0";
+    printf("name = %s \n", name);
+    printf("(char*)((char*)pt + 8 + 12) = %s \n", ((char*)pt + 8 + 12));
  }
